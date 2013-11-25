@@ -46,8 +46,8 @@ g.selectAll("path").attr("d", path);
 //Loading data
  
 queue()
-.defer(d3.json, "/d/5685937/world-110m.json")
-.defer(d3.tsv, "/d/5685937/world-110m-country-names.tsv")
+.defer(d3.json, "data/world-110m.json")
+.defer(d3.tsv, "data/world-110m-country-names.tsv")
 .await(ready);
  
  
