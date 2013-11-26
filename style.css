@@ -1,0 +1,41 @@
+body {
+  background: #fcfcfa;
+  color: #333;
+  font-family: "PT Serif", serif;
+  margin: 1em auto 4em auto;
+  position: relative;
+  width: 960px;
+}
+
+body p {
+width: 720px;
+}
+
+h1, h2 {
+text-rendering: optimizeLegibility;
+}
+
+h2 {
+margin-top: 2em;
+}
+
+header, footer, h1, h2, h3, h4, aside {
+color: #000;
+font-family: "PT Sans", sans-serif;
+}
+
+.example {
+  margin: 2em 0 2em 0;
+}
+
+.example iframe {
+  background: #fff;
+  border: solid 1px #ddd;
+}
+
+aside {
+font-size: small;
+right: 0;
+position: absolute;
+width: 180px;
+}

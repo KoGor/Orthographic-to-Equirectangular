@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<link href="style.css" rel="stylesheet">
+<body>
+  <header>
+    <h1>Orthographic to Equirectangular.</br>Projections transition.</h1>
+  </header>
+  <section id="beginning">
+    <header>
+      <h2>Challenge accepted!</h2>
+    </header>
+    <p>Some time ago I saw cool infographic commercial on TV: rotating globe was unreelling to flat map. Of course it was cartoon, but I knew that it was possible to make the same and even better for web. Challenge was accepted. I decided to use D3.js for this map experiment. Why D3.js? Because Mike Bostock has lots of <a href="http://bl.ocks.org/mbostock" title="Mike Bostock's gallery of examples">examples</a> which you can use as little blocks for your visualization. So if you never heared about d3.js - now it's good time to begin explore this cool library.</p>
+  </section>
+  <section id="main part">
+    <header>
+      <h2>From simple to complex</h2>
+    </header>
+
+    <p>First attempt. Globe rotating all the time if mouse not over maparea, when mouseover event fires - transition begins. Transition is simple path to path (shortest trek).</p>
+
+    <p class="example">
+      <iframe data-src="http://bl.ocks.org/KoGor/raw/7023703/375bcc1dadde52aa79a8464bf7348ea62f69db49/" width="960" height="500" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    </p>
+
+    <aside>
+      <a href="http://bl.ocks.org/KoGor/7023703" target="_blank">bl.ocks.org/KoGor/7023703</a>
+    </aside>
+
+    <p>If you play a while with this example, you will notice that map looks different each time. It is because we cut our globe at different meridian each time. So to get familiar view (antimeridian cutting) we should rotate globe to zero meridian before transition.</p>
+
+    <p>Second attempt. Now globe rotating manually via drag event and map always cut along antimeridian</p>
+
+    <p class="example">
+      <iframe data-src="http://bl.ocks.org/KoGor/raw/7024546/8c497ac0e908f47df30cebd887739c0c698c750c/" width="960" height="500" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    </p>
+    <aside>
+      <a href="http://bl.ocks.org/KoGor/7024546" target="_blank">bl.ocks.org/KoGor/7024546</a>
+    </aside>    
+    <p>Now it's better, our transition looks cool but weird. So our next step will be about making unreel/reel transition.</p>
+    <header>
+      <h2>Real unreel</h2>
+    </header>
+    <p>Luckily I found proper example in Mike's gallery: <a href="http://bl.ocks.org/mbostock/5731632" title="Orthographic projection transition to Equirectangular projection">Orthographic to Equirectangular</a>. It really helped me. With minor changes we can make it work in both sides. This minor change is clip fixing - we need to add clipAngle interpolation for map to globe transition. Third attempt. Globe unreeling after click on land and reel back after double click on any country.</p>
+    <p class="example">
+      <iframe data-src="http://bl.ocks.org/KoGor/raw/7024936/baebcc5b2403aaa8eebf6b0ede1b1d9c2ac56b27/" width="960" height="500" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    </p>
+    <aside>
+      <a href="http://bl.ocks.org/KoGor/7024936" target="_blank">bl.ocks.org/KoGor/7024936</a>
+    </aside>
+    <p>Now all is working and looks quite nice!</p>     
+  </section>
+  <section id="ending">
+    <header>
+      <h2>Further improvements</h2>
+    </header>
+    <p>Finally I decided to make canvas implementation, it is quite simple. Click on canvas to unreel/reel. That's it!</p>
+    <p class="example">
+      <iframe data-src="http://bl.ocks.org/KoGor/raw/7025316/e8a94f86cadc769a12c78d21a1c6318bc39123aa/" width="960" height="500" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+    </p>
+    <aside>
+      <a href="http://bl.ocks.org/KoGor/7025316" target="_blank">bl.ocks.org/KoGor/7025316</a>
+    </aside>
+    <p>You can see some artefacts during reeling back to globe, I guess it is because of clipping, if you have any ideas how to fix it, let me know.</p>
+    <p>You can make your visualization more "shiny" by adding different cool effects, gradients, shadows and etc. Here some examples for inspiration:
+    <ul>
+      <li><a href="http://bl.ocks.org/dwtkns/4686432">Faux-3d Shaded Globe</a></li>
+      <li><a href="http://bl.ocks.org/mbostock/6738360">Floating Landmasses</a></li>
+      <li><a href="http://bl.ocks.org/mbostock/6746848">See-Through Globe</a></li>   
+    </ul>
+    That's all, I hope you found interesting this map experiment. You can fork all varaiants at once on <a href="https://github.com/KoGor/Orthographic-to-Equirectangular/tree/master">GitHub</a>.
+    </P>
+  </section>
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script>
+
+  var iframe = d3.selectAll(".example iframe[data-src]").datum(function() {
+    return {
+      visible: false,
+      src: this.getAttribute("data-src")
+    };
+  });
+  
+  d3.select(window)
+      .on("scroll", scrolled)
+      .on("resize", scrolled);
+  
+  function scrolled() {
+    var height = window.innerHeight || document.documentElement.clientHeight;
+    iframe.filter(function(d) {
+      var visible0 = d.visible, box = this.getBoundingClientRect();
+      d.visible = !(box.bottom < 0 || box.top > height);
+      return visible0 !== d.visible;
+    }).attr("src", function(d) {
+      return d.visible ? d.src : null;
+    });
+  }
+  
+  </script>
+</body>
+</html>
+
